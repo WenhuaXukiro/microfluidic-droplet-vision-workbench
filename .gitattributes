@@ -1,0 +1,10 @@
+* text=auto
+*.py text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.html text eol=lf
+*.cjs text eol=lf
+*.command text eol=lf
+*.bat text eol=crlf
+.gitignore text eol=lf
+.gitattributes text eol=lf

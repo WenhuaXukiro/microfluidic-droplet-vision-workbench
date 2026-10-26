@@ -1,0 +1,54 @@
+# Local experiment data, annotations, runs and model manifests
+/data/
+/models/
+/weights/
+/package-manifest.json
+
+# Model weights, exports and archives
+*.pt
+*.pth
+*.onnx
+*.safetensors
+*.zip
+*.zip.*
+*.tar
+*.tar.gz
+*.partial
+
+# Python environments and caches
+.venv/
+venv/
+env/
+.install-cache/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Local tools and configuration
+node_modules/
+.git/
+.agents/
+.codex/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+__MACOSX/
+*.log
+*.tmp
+
+# Credentials and local settings
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+secrets.json

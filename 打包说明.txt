@@ -1,0 +1,15 @@
+DropletLab 完整项目备份包（2026-10-24）
+
+包含源码、Mac与Windows启动和安装脚本、全部4657张图片与标注、前处理规则、数据集划分、已训练模型、训练日志、验证报告与数据集快照。
+标注2当前启用最新ConvNeXt-Tiny：2150张训练、537张验证、522张正确，验证准确率97.21%，宏平均F1为95.22%。
+不包含 .venv、依赖下载缓存、Python字节码缓存及Matplotlib缓存；这些内容可在目标电脑重新生成。
+
+使用方法：
+1. 完整解压到可写目录，并先阅读“解压后先读.md”。
+2. Mac运行“安装训练环境.command”和“启动软件.command”；Windows运行02_Install_Training_Windows.bat和01_Start_Windows.bat。
+3. 识别、训练及增强预览需要安装依赖。NVIDIA显卡请参考Windows_README.md安装CUDA版PyTorch。
+4. 原训练快照中的data.yaml/local.yaml可能包含旧电脑的绝对路径；换目录后请重新导出或从工作台重新启动训练。
+5. data/project.json为标注数据库，data/images为图片，data/classifier_runs和data/runs保存分类与检测模型；models内的active_model.json指向启用模型。请保持目录结构完整。
+6. package-manifest.json记录本次文件的SHA-256，verify_package.py可检查解压文件；压缩包旁的.sha256文件用于校验ZIP本身。
+
+此包为源码与数据备份，首次使用需安装Python和依赖。验证集来自同一视频，不能代替独立视频测试。

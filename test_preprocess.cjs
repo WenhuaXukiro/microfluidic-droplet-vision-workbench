@@ -1,0 +1,11 @@
+const fs=require('fs'),assert=require('assert'),vm=require('vm');
+const html=fs.readFileSync(__dirname+'/static/index.html','utf8');
+const source=html.slice(html.indexOf('function processImage('),html.indexOf('function previewRule('));
+let calls=[];const context={drawImage:(...a)=>calls.push(a),getImageData:()=>({data:new Uint8ClampedArray([100,100,100,255])}),putImageData:p=>{context.result=p.data}};
+const sandbox={document:{createElement:()=>({getContext:()=>context})}};vm.createContext(sandbox);vm.runInContext(source,sandbox);
+let rule={roi:{x:75,y:0,w:25,h:100},units:'relative',gray:false,brightness:1,contrast:1,resize:1};
+let out=sandbox.processImage({naturalWidth:960,naturalHeight:784},rule);assert.equal(out.canvas.width,240);assert.equal(out.canvas.height,784);assert.equal(out.rect.x,720);assert.equal(context.result[0],100);
+out=sandbox.processImage({naturalWidth:1920,naturalHeight:1568},rule);assert.equal(out.rect.x,1440);assert.equal(out.canvas.width,480);
+rule={...rule,units:'pixels',roi:{x:720,y:0,w:240,h:784},brightness:2};out=sandbox.processImage({naturalWidth:960,naturalHeight:784},rule);assert.equal(context.result[0],200);
+assert.throws(()=>sandbox.processImage({naturalWidth:640,naturalHeight:480},rule),/尺寸/);
+console.log('Crop dimensions, relative batch coordinates, brightness, identity and out-of-bounds checks passed');
