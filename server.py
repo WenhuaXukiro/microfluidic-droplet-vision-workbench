@@ -1,7 +1,7 @@
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
-import time, random
+import time, random, mimetypes
 import json, base64, uuid, shutil, zipfile, io, subprocess, sys, threading, importlib.util, math
 from image_preprocessing import PRESETS, validate_preset
 ROOT=Path(__file__).resolve().parent
@@ -241,7 +241,9 @@ class Handler(BaseHTTPRequestHandler):
         target=(ROOT/'static'/'index.html') if self.path=='/' else (DATA/self.path.lstrip('/')) if self.path.startswith('/images/') else ROOT/'static'/self.path.lstrip('/')
         target=target.resolve()
         if not target.is_relative_to(ROOT) or not target.is_file(): return self.send({'error':'文件不存在'},404)
-        self.send_response(200); self.send_header('Content-Type','text/html; charset=utf-8' if target.suffix=='.html' else 'image/png' if target.suffix=='.png' else 'image/jpeg'); self.end_headers(); self.wfile.write(target.read_bytes())
+        content_type=mimetypes.guess_type(target.name)[0] or 'application/octet-stream'
+        if target.suffix in ('.html','.js','.css','.json'):content_type+='; charset=utf-8'
+        self.send_response(200); self.send_header('Content-Type',content_type); self.end_headers(); self.wfile.write(target.read_bytes())
     def do_POST(self):
         try:
             if self.headers.get('Origin') and self.headers['Origin'] not in ('http://127.0.0.1:8765','http://localhost:8765'): raise ValueError('不允许跨站请求')
